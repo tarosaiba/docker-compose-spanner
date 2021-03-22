@@ -3,14 +3,14 @@ services:
 
     # Spanner
     spanner:
-     image: gcr.io/cloud-spanner-emulator/emulator
+     image: gcr.io/cloud-spanner-emulator/emulator:1.2.0
      ports:
          - "9010:9010"
          - "9020:9020"
 
     # Init (Create Instance)
     gcloud-spanner-init:
-      image: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+      image: gcr.io/google.com/cloudsdktool/cloud-sdk:332.0.0-slim
       command: >
        bash -c 'gcloud config configurations create emulator &&
                gcloud config set auth/disable_credentials true &&
@@ -26,7 +26,7 @@ services:
 
     # DB Migration (Create Table)
     wrench-crearte:
-      image: mercari/wrench
+      image: mercari/wrench:1.0.3
       command: "create --directory /ddl"
       environment:
         SPANNER_PROJECT_ID: "test-project"
@@ -40,7 +40,7 @@ services:
 
     # DB Migration (Insert data)
     wrench-apply:
-      image: mercari/wrench
+      image: mercari/wrench:1.0.3
       command: "apply --dml /dml/dml.sql"
       environment:
         SPANNER_PROJECT_ID: "test-project"
@@ -54,7 +54,7 @@ services:
 
     # CLI
     spanner-cli:
-      image: sjdaws/spanner-cli:latest
+      image: sjdaws/spanner-cli:v1.0.0
       environment:
         SPANNER_EMULATOR_HOST: "spanner:9010"
       command: ['sh', '-c', 'echo this container keep running && tail -f /dev/null']
