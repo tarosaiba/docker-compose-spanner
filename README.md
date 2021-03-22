@@ -2,7 +2,7 @@
 
 ## Requirements:
 * docker >= 19.03.0+
-* docker-compose
+* docker-compose >= 1.27.0+
 
 ## Quick Start
 * Clone or download this repository
